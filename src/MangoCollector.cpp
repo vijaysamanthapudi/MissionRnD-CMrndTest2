@@ -61,7 +61,9 @@ Note :You can use your own custom function with extra parameters, Max height of 
 */
 #include <stdlib.h>
 #include <stdio.h>
-
+int max = 123456;
+int issum(int *shortestpath, int * shortestpathlen);
+int ispro(int *shortestpath, int * shortestpathlen);
 struct node{
 	int data;
 	struct node *left;
@@ -69,6 +71,47 @@ struct node{
 };
 
 int mangocity_count_ways(struct node *startcity,int k, int *shortestpath,int *shortestpathlen){
-	//Just Copy values in shortestpath and shortestpathlen .Dont allocate memory for it .
-	return -1;
+	if (startcity == NULL || shortestpath == NULL)
+	{
+		return -1;
+	}
+	//int max = 123456;
+	shortestpath[(*shortestpathlen)] = startcity->data;
+	(*shortestpathlen)++;
+	int x = k - startcity->data;
+	if (max > ispro(shortestpath, shortestpathlen))
+	{
+		max = ispro(shortestpath, shortestpathlen);
+	}
+	if (x==0)
+	{
+		return *shortestpathlen;
+	}
+	else
+	{
+		mangocity_count_ways(startcity->left, x, shortestpath, shortestpathlen);
+		mangocity_count_ways(startcity->right, x, shortestpath, shortestpathlen);
+	}
+
 }
+
+int issum(int *shortestpath, int * shortestpathlen)
+{
+	int i, sum = 0;
+	for (i = 0; i < *shortestpathlen; i++)
+	{
+		sum += shortestpath[*shortestpath];
+	}
+	return sum;
+}
+
+int ispro(int *shortestpath, int * shortestpathlen)
+{
+	int i, prd = 1;
+	for (i = 0; i < *shortestpathlen; i++)
+	{
+		prd *= shortestpath[*shortestpathlen];
+	}
+	return prd;
+}
+

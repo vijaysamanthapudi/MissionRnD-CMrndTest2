@@ -64,7 +64,65 @@ Note : There will be only One Maximum Jumps path .[If there are multiple ,Return
 */
 #include <stdlib.h>
 #include <stdio.h>
-
+void search(int *blocks, int n, int m, int *a);
+int *steps(int *blocks, int  n, int  m, int  i, int  j, int *jumps_count);
 int * pillars_max_jumps(int *blocks, int n, int m,int *jumps_count){
-	return NULL;
+	
+	if (blocks == NULL)
+	{
+		return NULL;
+	}
+	int a[2] = { -1 }, i, j;
+	search(blocks, n, m, a);
+	if (a[1] != -1 && a[0] != -1)
+	{
+		i = a[0];
+	 j = a[1];
+	}
+	return steps(blocks, n, m, i, j, jumps_count);
+	
+
+	
+}
+
+void search(int *blocks, int n, int m,int *a)
+{
+	int i, j;
+	for (i = 0; i < n; i++)
+	{
+		for (j = 0; j < m; j++)
+		{
+			if (*((blocks + i*n) + j) == 1)
+			{
+				a[0] = i;
+				a[1] = j;
+				return;
+			}
+		}
+	}
+}
+int *steps(int *blocks, int  n, int  m, int  i, int  j, int *jumps_count)
+{
+	if (*((blocks + (i - 1)*n) + j) < *((blocks + (i + 1)*n) + j) && *((blocks + (i - 1)*n) + j) < *((blocks + (i )*n) + j+1) && *((blocks + (i - 1)*n) + j) != 0)
+	{
+		(*jumps_count)++;
+		steps(blocks, n, m, i - 1, j, jumps_count);
+
+	}
+	else if (*((blocks + (i + 1)*n) + j) < *((blocks + (i - 1)*n) + j) && *((blocks + (i + 1)*n) + j) < *((blocks + (i)*n) + j+1) && *((blocks + (i + 1)*n) + j) != 0)
+	{
+		(*jumps_count)++;
+		steps(blocks, n, m, i + 1, j, jumps_count);
+	}
+	else if (*((blocks + (i)*n) + j + 1) < *((blocks + (i - 1)*n) + j) && *((blocks + (i)*n) + j + 1) < *((blocks + (i)*n) + j+1) && *((blocks + (i)*n) + j + 1) != 0)
+	{
+		(*jumps_count)++;
+		steps(blocks, n, m, i, j+1, jumps_count);
+	}
+	else if ((*((blocks + i*n) + j) > *((blocks + i + 1 * n) + j)) && (*((blocks + i*n) + j) > *((blocks + i - 1 * n) + j)) && (*((blocks + i*n) + j) > *((blocks + i + 1 * n) + j + 1)))
+	{
+		return jumps_count;
+	}
+	
+
 }
